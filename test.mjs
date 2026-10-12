@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {validateOptions} from './options.mjs';
+const input={chatDisabled:true,showStats:false};
+assert.deepEqual(validateOptions(input),input);
+assert.throws(()=>validateOptions({...input,extra:1}),/未知/);
+assert.throws(()=>validateOptions({...input,showStats:'false'}),/布尔/);
+assert.throws(()=>validateOptions({chatDisabled:true}),/缺少/);
+assert.throws(()=>validateOptions(null),TypeError);
+assert.throws(()=>validateOptions([]),TypeError);
+assert.throws(()=>validateOptions(Object.create(input)),/缺少/);
+const copy=validateOptions(input);copy.chatDisabled=false;
+assert.equal(input.chatDisabled,true);
+console.log('8 assertions passed');
